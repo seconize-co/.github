@@ -1,0 +1,125 @@
+name: "Feature Epic"
+description: "Create a cross-repo feature epic to track from requirements through delivery"
+title: "FEAT: "
+labels: ["epic", "phase/spec", "priority/P2"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Epic
+        This issue tracks a feature across all DRC repositories — from requirements through design, implementation, testing, and release. It is the **single source of truth** for this feature's progress.
+
+        > **Priority label defaults to `priority/P2`.** After submitting, update the label on the right sidebar if needed:
+        > - `priority/P0` — Blocks release, critical
+        > - `priority/P1` — Must have this sprint
+        > - `priority/P2` — Should have *(default — no change needed)*
+        > - `priority/P3` — Nice to have
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: "What problem does this feature solve? Who is affected and what pain do they experience?"
+      placeholder: "Organizations need to... but currently..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: "High-level description of what the feature should do"
+      placeholder: "This feature enables users to..."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: modules
+    attributes:
+      label: Affected Modules
+      description: "Which repositories/modules will need changes?"
+      options:
+        - label: "Database (drc-setup)"
+        - label: "Backend API (drc-server)"
+        - label: "Frontend UI (drc-ui-v3)"
+        - label: "Reports (drc-report)"
+        - label: "Agents (drc-agents)"
+        - label: "Sensor (drc-sensor)"
+        - label: "Product Help & Documentation (drc-help)"
+        - label: "Documentation & SOPs (drc-sops)"
+        - label: "Infrastructure (drc-infra, server-build)"
+        - label: "Connectors (drc-connectors)"
+        - label: "Collector (drc-collector)"
+        - label: "Queue Manager (drc-deq-mgr)"
+        - label: "Document Remediation (drc-drm)"
+        - label: "CIS Benchmarks (drc-cis-benchmarks)"
+        - label: "Testing (drc-test)"
+        - label: "Production Ops (drc-prod-ops)"
+        - label: "SRI Server / CVE Intelligence (sri-server)"
+        - label: "Cloud Security Audit (scoutsuite)"
+        - label: "Cloud Security Scanning (cloudsploit)"
+
+  - type: dropdown
+    id: change_tier
+    attributes:
+      label: Change Tier
+      description: "How much spec work is needed? See FEATURE-WORKFLOW.md Section 3 for guidance."
+      options:
+        - "T1 — New Feature (full suite: FRS + HLD in workspace, all MRDs in repos)"
+        - "T2 — Major Enhancement (update FRS + HLD delta + affected MRDs)"
+        - "T3 — Minor Enhancement (update FRS + GitHub issue)"
+        - "T4 — Bug Fix / Tweak (GitHub issue only, no spec)"
+    validations:
+      required: true
+
+  - type: input
+    id: target_release
+    attributes:
+      label: Target Release
+      description: "Version or quarter target"
+      placeholder: "e.g., v4.2.0 or Q2 2026"
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: "High-level criteria for when this feature is done"
+      placeholder: |
+        - [ ] User can create a ...
+        - [ ] System computes ...
+        - [ ] All P0 test cases pass
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: "Links to customer requests, internal documents, related features"
+      placeholder: |
+        - Customer request: ...
+        - Related feature: #...
+
+  - type: textarea
+    id: tracking
+    attributes:
+      label: Tracking (updated during lifecycle — do not fill at creation)
+      description: "Gate progress checklist. Updated by the tech lead as the feature moves through Gates 1–3."
+      value: |
+        **Feature-level specs** (in drc-specs):
+        - [ ] FRS: `features/<slug>/FRS.md` (T1: new, T2/T3: update existing)
+        - [ ] HLD: `features/<slug>/HLD.md` (T1: new, T2: update if arch changes)
+
+        **Module-level MRDs** (in respective repos, under `docs/features/<slug>/`):
+        - [ ] MRD-DB in drc-setup (T1: new, T2: update if affected)
+        - [ ] MRD-BE in drc-server (T1: new, T2: update if affected)
+        - [ ] MRD-UI in drc-ui-v3 (T1: new, T2: update if affected)
+        - [ ] MRD-DOCS in drc-sops (T1: new, T2: update if affected)
+        - [ ] MRD-TEST in drc-test (T1: new, T2: update if affected)
+
+        **Implementation Issues** (create after spec approval):
+        - [ ] drc-setup#__ — DB migration
+        - [ ] drc-server#__ — Backend API
+        - [ ] drc-ui-v3#__ — Frontend UI
+        - [ ] drc-sops#__ — SOPs & documentation
+        - [ ] drc-test#__ — Tests
