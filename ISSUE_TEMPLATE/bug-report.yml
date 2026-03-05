@@ -1,13 +1,16 @@
 name: "Bug Report"
-description: "Report a bug in this repository"
+description: "Report a bug found during development or testing"
 title: "BUG: "
 labels: ["bug", "priority/P2"]
 body:
   - type: markdown
     attributes:
       value: |
-        **Priority:** This issue has been labelled `priority/P2` (normal cadence) by default.
-        Upgrade to `priority/P0` or `priority/P1` on the sidebar if the bug is urgent.
+        > **Priority label defaults to `priority/P2`.** After submitting, update the label on the right sidebar if this is higher priority:
+        > - `priority/P0` — Production down, fix immediately
+        > - `priority/P1` — Major impact, fix same day
+        > - `priority/P2` — Normal impact *(default — no change needed)*
+        > - `priority/P3` — Low impact, normal backlog
 
   - type: textarea
     id: description
@@ -46,6 +49,34 @@ body:
       required: true
 
   - type: dropdown
+    id: module
+    attributes:
+      label: Affected Module
+      options:
+        - "Database (drc-setup)"
+        - "Backend API (drc-server)"
+        - "Frontend UI (drc-ui-v3)"
+        - "Reports (drc-report)"
+        - "Agents (drc-agents)"
+        - "Sensor (drc-sensor)"
+        - "Documentation & SOPs (drc-sops)"
+        - "Infrastructure (drc-infra)"
+        - "Connectors (drc-connectors)"
+        - "Collector (drc-collector)"
+        - "Queue Manager (drc-deq-mgr)"
+        - "Document Remediation (drc-drm)"
+        - "CIS Benchmarks (drc-cis-benchmarks)"
+        - "Testing (drc-test)"
+        - "Product Help & Documentation (drc-help)"
+        - "SRI Server / CVE Intelligence (sri-server)"
+        - "Production Log Intelligence (drc-prod-ops)"
+        - "Cloud Security Audit (scoutsuite)"
+        - "Cloud Security Scanning (cloudsploit)"
+        - "Unknown"
+    validations:
+      required: true
+
+  - type: dropdown
     id: severity
     attributes:
       label: Severity
@@ -75,8 +106,8 @@ body:
     id: customer_impact
     attributes:
       label: Customer Impact
-      description: "If customer-reported, link the drc-workspace intake issue. Leave blank if found internally."
-      placeholder: "seconize-co/drc-workspace#N (optional)"
+      description: "If customer-reported, link the Customer_Ops issue. Leave blank if found internally."
+      placeholder: "seconize-co/Customer_Ops#123 (optional)"
 
   - type: input
     id: feature_epic
