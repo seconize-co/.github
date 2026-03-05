@@ -1,0 +1,236 @@
+name: "Auto Bug Report (prod-ops)"
+description: "Machine-generated bug from drc-prod-ops log analysis. Do not use manually."
+title: "BUG [auto]: "
+labels: ["bug", "source/prod-ops", "priority/P2"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > ⚙️ **This template is used by `drc-prod-ops` automated bug creation (FR-4.2).**
+        > Do not fill this manually — use the regular [Bug Report](bug-report.yml) template instead.
+        >
+        > **Priority** defaults to `priority/P2`. The system auto-escalates to `priority/P1` when:
+        > - Exception affects **>3 tenants**, OR
+        > - Exception occurs **>100 times/day**
+
+  - type: input
+    id: fingerprint
+    attributes:
+      label: Exception Fingerprint
+      description: "SHA-256 fingerprint (exception class + message + top 3 app stack frames)"
+      placeholder: "a1b2c3d4e5f6..."
+    validations:
+      required: true
+
+  - type: input
+    id: exception_class
+    attributes:
+      label: Exception Class
+      description: "Fully qualified Java exception class"
+      placeholder: "java.lang.NullPointerException"
+    validations:
+      required: true
+
+  - type: textarea
+    id: exception_message
+    attributes:
+      label: Exception Message
+      description: "The exception message text"
+      placeholder: "Cannot invoke method on null reference"
+    validations:
+      required: true
+
+  - type: textarea
+    id: stack_trace
+    attributes:
+      label: Stack Trace (top 10 frames)
+      description: "Top 10 application stack frames (framework frames excluded)"
+      render: text
+      placeholder: |
+        at com.seconize.multitenancy.compliance.service.ComplianceReportService.generate(ComplianceReportService.java:312)
+        at com.seconize.multitenancy.compliance.controller.ComplianceController.generateReport(ComplianceController.java:87)
+        ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: exception_category
+    attributes:
+      label: Exception Category
+      description: "Classified by the priority engine (BR-6 Layer 1)"
+      options:
+        - "General — No special classification"
+        - "Log-Level Misclassification — Not a real error, wrong log level"
+        - "SQL / Data-Access — Broken query or data integrity issue"
+        - "Resource Exhaustion — Connection pool, thread pool, or memory exhaustion"
+        - "Auth-Security — Token/permission/credential security threat"
+        - "Auth-Friction [captcha] — Captcha validation causing user friction"
+        - "Auth-Friction [mfa] — MFA/OTP issues blocking legitimate users"
+        - "Auth-Friction [password] — Password expiry/policy/reset friction"
+        - "Auth-Friction [lockout] — Account locked after failed attempts"
+        - "Auth-Friction [sso] — SSO/SAML authentication failure"
+        - "Auth-Friction [session] — Session/token expiry blocking users"
+        - "Job/Scheduler Failure — Background job or scheduled task failure"
+        - "Email/Notification Failure — SMTP or notification delivery error"
+        - "File/Storage Error — Upload, sync, or blob storage failure"
+        - "Integration/Connector Error — Third-party API or data pipeline failure"
+        - "AI/LLM Failure — LLM API error or vector DB issue (fallback active)"
+        - "UX-Signal — User confusion indicator, journey captured"
+        - "Performance — Timeout or latency breach"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module
+
+    attributes:
+      label: Affected Module
+      description: "Module attributed from the exception's package path"
+      options:
+        - "Database (drc-setup)"
+        - "Backend API (drc-server)"
+        - "Frontend UI (drc-ui-v3)"
+        - "Reports (drc-report)"
+        - "Agents (drc-agents)"
+        - "Sensor (drc-sensor)"
+        - "Documentation & SOPs (drc-sops)"
+        - "Infrastructure (drc-infra)"
+        - "Connectors (drc-connectors)"
+        - "Collector (drc-collector)"
+        - "Queue Manager (drc-deq-mgr)"
+        - "Document Remediation (drc-drm)"
+        - "CIS Benchmarks (drc-cis-benchmarks)"
+        - "Testing (drc-test)"
+        - "Product Help & Documentation (drc-help)"
+        - "SRI Server / CVE Intelligence (sri-server)"
+        - "Production Log Intelligence (drc-prod-ops)"
+        - "Cloud Security Audit (scoutsuite)"
+        - "Cloud Security Scanning (cloudsploit)"
+        - "Unknown"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: "Computed by the priority engine (BR-6). Maps from priority: P0→Critical, P1→High, P2→Medium, P3→Low"
+      options:
+        - "Critical (P0) — Platform-wide impact or all tenants affected"
+        - "High (P1) — SQL/security/auth exception, or >100/day with >3 tenants"
+        - "Medium (P2) — Threshold breach, UX-signal, or P95 >3s"
+        - "Low (P3) — Log-level misclassification or low-frequency"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: detection_trigger
+    attributes:
+      label: Detection Trigger
+      description: "What triggered this auto-bug?"
+      options:
+        - "Frequency threshold exceeded (recurring exception)"
+        - "New exception fingerprint (never-before-seen)"
+        - "Post-deployment regression (new after release)"
+        - "Escalation (existing bug worsened)"
+    validations:
+      required: true
+
+  - type: input
+    id: service_name
+    attributes:
+      label: Service Name
+      description: "The service/application where the exception was detected"
+      placeholder: "drc-server"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - "Production"
+        - "Staging"
+    validations:
+      required: true
+
+  - type: textarea
+    id: occurrence_stats
+    attributes:
+      label: Occurrence Statistics
+      description: "Frequency, tenant impact, and timeline"
+      placeholder: |
+        - **Total occurrences (today):** 47
+        - **Tenants affected:** 8 / 20
+        - **First seen:** 2026-03-01 14:23:07 UTC
+        - **Last seen:** 2026-03-04 09:11:42 UTC
+        - **Trend:** Increasing (+35% WoW)
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected_tenants
+    attributes:
+      label: Affected Tenants
+      description: "List of affected tenant aliases (not real tenantIds — per BR-4.2)"
+      render: text
+      placeholder: |
+        <details><summary>8 tenants affected (click to expand)</summary>
+        - acme-corp (12 occurrences)
+        - globex-inc (9 occurrences)
+        - initech-ltd (7 occurrences)
+        ...
+        </details>
+    validations:
+      required: true
+
+  - type: input
+    id: sample_request_id
+    attributes:
+      label: Sample Request ID
+      description: "A requestId for log correlation and debugging"
+      placeholder: "req-abc123-def456"
+    validations:
+      required: true
+
+  - type: input
+    id: related_endpoint
+    attributes:
+      label: Related API Endpoint
+      description: "The endpoint where the exception was thrown (if identifiable)"
+      placeholder: "POST /api/v1/compliance/reports/generate"
+
+  - type: input
+    id: suspected_release
+    attributes:
+      label: Suspected Release
+      description: "If first-seen correlates with a deployment, note the release version"
+      placeholder: "v3.14.2 (deployed 2026-03-01)"
+
+  - type: textarea
+    id: ux_journey
+    attributes:
+      label: User Journey Context (UX-Signal bugs only)
+      description: "Populated when exception category is UX-Signal. Shows what users were doing when they hit this error."
+      placeholder: |
+        **Distinct users affected:** 12
+        **Page:** /admin/users
+        **Action:** Search Users
+        **Sample navigation paths (3 sessions):**
+        1. Login → Dashboard → Admin → Users → Search → ERROR
+        2. Login → Admin → Users → Search → ERROR
+        3. Login → Dashboard → Users → Search → ERROR
+
+  - type: input
+    id: feature_epic
+    attributes:
+      label: Related Feature Epic
+      description: "Link to related feature epic if the exception is in a recently shipped feature"
+      placeholder: "seconize-co/drc-workspace#42 (optional)"
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: "Any extra log context, correlation with other exceptions, or notes"
