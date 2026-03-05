@@ -1,0 +1,93 @@
+name: "Module Implementation Task"
+description: "Implementation task for a specific module within a feature epic"
+title: "<FEATURE>: "
+labels: ["phase/impl"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Module Implementation Task
+        This issue tracks the implementation work for a specific module (DB/BE/UI/Docs/Infra/Test) within a feature epic.
+
+  - type: input
+    id: epic
+    attributes:
+      label: Epic
+      description: "Link to the parent feature epic in drc-workspace"
+      placeholder: "seconize-co/drc-workspace#42"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - "Database (drc-setup)"
+        - "Backend API (drc-server)"
+        - "Frontend UI (drc-ui-v3)"
+        - "Reports (drc-report)"
+        - "Agents (drc-agents)"
+        - "Sensor (drc-sensor)"
+        - "Documentation & SOPs (drc-sops)"
+        - "Infrastructure (drc-infra)"
+        - "Connectors (drc-connectors)"
+        - "Collector (drc-collector)"
+        - "Queue Manager (drc-deq-mgr)"
+        - "Document Remediation (drc-drm)"
+        - "CIS Benchmarks (drc-cis-benchmarks)"
+        - "Testing (drc-test)"
+        - "Product Help & Documentation (drc-help)"
+        - "SRI Server / CVE Intelligence (sri-server)"
+        - "Production Log Intelligence (drc-prod-ops)"
+        - "Cloud Security Audit (scoutsuite)"
+        - "Cloud Security Scanning (cloudsploit)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: mrd_reference
+    attributes:
+      label: Module Requirements
+      description: "Link to the MRD for this module (lives in this repo under docs/features/)"
+      placeholder: |
+        - MRD: docs/features/<feat>/MRD-BE.md (in this repo)
+        - FRS: https://github.com/seconize-co/drc-specs/blob/main/features/<feat>/FRS.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Implementation Checklist
+      description: "Specific tasks to complete for this module"
+      placeholder: |
+        - [ ] Entity + Repository
+        - [ ] Service interface + implementation
+        - [ ] Controller endpoints
+        - [ ] DTOs + DataResponse envelope
+        - [ ] Build passes locally
+        - [ ] No new warnings
+      value: |
+        - [ ]
+        - [ ]
+        - [ ]
+        - [ ] Build passes locally
+        - [ ] No new warnings
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: "Other implementation issues that must be completed before this one"
+      placeholder: |
+        - Depends on: seconize-co/drc-setup#18 (DB migration must run first)
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Implementation Notes
+      description: "Any additional context, gotchas, or special considerations"
+      placeholder: "Remember to add GraphService stubs if IGCFMapService is modified"
