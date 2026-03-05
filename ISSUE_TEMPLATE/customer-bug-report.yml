@@ -1,0 +1,103 @@
+name: "Customer Bug Report"
+description: "Report a bug or issue experienced by a customer"
+title: "BUG: "
+labels: ["bug", "customer", "priority/P2"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > **Priority label defaults to `priority/P2`.** Update on the right sidebar if more urgent:
+        > - `priority/P0` — Production down, customer cannot work at all
+        > - `priority/P1` — Major feature broken, significant customer impact
+        > - `priority/P2` — Moderate impact, workaround exists *(default)*
+        > - `priority/P3` — Minor issue, cosmetic
+        >
+        > **Customer name:** Add a label with the customer/org name (e.g., `acme-corp`) from the sidebar after submitting.
+
+  - type: dropdown
+    id: ui_area
+    attributes:
+      label: UI Area
+      description: "Where in the product does the issue occur?"
+      options:
+        - "Login & Authentication"
+        - "Insights / Dashboard"
+        - "Vulnerability Management"
+        - "Compliance Management"
+        - "Evidence Collection & Upload"
+        - "Risk Register"
+        - "Policy Management"
+        - "Exception Management"
+        - "Third-Party Risk Management (TPRM)"
+        - "AI Chatbot"
+        - "Administration — Users & Roles"
+        - "Administration — Assets"
+        - "Administration — Connectors & Integrations"
+        - "Administration — Sensors / Agents"
+        - "Administration — Notifications"
+        - "Administration — Reports & Exports"
+        - "Administration — Settings & Configuration"
+        - "Document Remediation"
+        - "CIS Benchmarks"
+        - "Product Help & Documentation"
+        - "Site / Application Down"
+        - "Performance / Slow Loading"
+        - "Data Not Loading / Sync Issues"
+        - "Other / Not sure"
+    validations:
+      required: true
+
+  - type: input
+    id: sub_area
+    attributes:
+      label: Sub Area
+      description: "Which specific screen, page, or feature? (optional)"
+      placeholder: "e.g., CCM dashboard, Evidence upload modal, PDF export button"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: "Describe what the customer saw — in their words if possible."
+      placeholder: "Customer reported that when they click Export on the Audit page, the PDF is empty..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: "How do we reproduce this? Include any specific data, user role, or filter state."
+      placeholder: |
+        1. Log in as...
+        2. Navigate to...
+        3. Click...
+        4. See...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behaviour
+      description: "What should have happened?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: "Where is the customer seeing this?"
+      options:
+        - "Production (customer site)"
+        - "Staging / UAT"
+        - "Unknown"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: "Screenshots, error messages, browser/OS, affected user accounts, or any other detail that helps reproduce."
